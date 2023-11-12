@@ -1,0 +1,118 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Game - Haw</title>
+    <style>
+        body{
+            text-align: center;
+            font-size: 1.75em;
+            color: white;
+            background-color: rgb(81, 81, 81);
+            width: 90%;
+        }
+
+        .green{background-color: rgb(0, 81, 0);}
+        .red{background-color: rgb(81, 0, 0);}
+
+        .buttons-display{
+            display: none;
+        }
+
+    </style>
+</head>
+<body id="body">
+    <div class="header">
+        <h4 style="text-align: right;" id="score">Score: </h4>
+        <h2>Quiz Game</h2>
+    </div>
+
+    <div class="start-buttons" id="startButtons">
+        <button onclick="start()"style="width:80%; height:30%; text-align:center;">Endless cause Im too lazy to code more</button>
+    </div>
+
+    <div class="questions-20Item buttons-display" id="twentyItemQuiz">
+        <h3 id="twentyQuestion">Question</h3>
+        <input type="text" id="twentyItemInput" style="width:80%; height:30%; font-size: 2em;">
+        <input type="button" id="twentyItemBtn" value="Send Answer" onclick="checkAnswer()" style="width:15%; height:30%;">
+        <p id="twentyItemAnswer"></p>
+    </div>
+
+    <div class="answers-20Item buttons-display" id="answer">
+        <h2 id="rightOrWrong"></h2>
+        <h3 id="twentyCorrectAnswer"></h3>
+        <input type="button" id="twentyNext" value="Next Question" onclick="questionGenerator()" style="width:80%; height:30%; text-align:center;"  >
+    </div>
+
+</body>
+
+<script>
+// Game Variables //
+var totalScore = 0
+var score = 0
+var randomItemAnswer = 0
+var body = document.getElementById("body")
+
+// Input Variables //
+var twentyQuestion = document.getElementById("twentyQuestion")
+var twentyInput = document.getElementById("twentyItemInput")
+var scoreDisplay = document.getElementById("score")
+var playerAnswer = ""
+
+// Items //
+var questions = ['Pagsusuri', 'Pagdiriwang', 'Etniko Natibo, tribu, pangkat', 'Patnubay, suporta', 'Misteryo, mahiraga', 'Eksperto, Bihasa', 'Umiwas, Lumiko', 'Bulagta, Nakahiga sa daan', 'Tungkulin', 'Kadalasan, Palagi', 'Naabot, Nakuha', 'Magnanakaw', 'Gold, Silver, Pera', 'Umalis, Lumayo', 'Kabaliktaran, Kasalungat']
+var answers = ['Pagdulog', 'Nagdaraos', 'Katutubo', 'Gabay', 'Talinghaga', 'Dalubhasa', 'Lumihis', 'Nakahandusay', 'Pananagutan', 'Kalimitan', 'Makakamit', 'Tulisan', 'Pilak', 'Humayo', 'Taliwas']
+
+// start game //
+function start() {
+    document.getElementById("startButtons").classList.toggle("buttons-display")
+    document.getElementById("twentyItemQuiz").classList.toggle("buttons-display")
+    questionGenerator()
+}
+
+// Random Number Generator //
+function randomInt(min, max) { // min and max included 
+  return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
+// Question Generator //
+function questionGenerator() {
+    //hide items
+    body.classList.remove("red")
+    body.classList.remove("green")
+    document.getElementById("answer").classList.add("buttons-display")
+    document.getElementById("twentyItemQuiz").classList.remove("buttons-display")
+    document.getElementById('twentyItemInput').value = ""
+    
+    randomItemAnswer = randomInt(0, (answers.length) - 1)
+
+    // Question Generate 
+    twentyQuestion.innerHTML = ('What is "' + questions[randomItemAnswer]+'"')
+}
+
+// Check Answers //
+function checkAnswer() {
+    
+    // Hide question and Input //
+    document.getElementById("twentyItemQuiz").classList.toggle("buttons-display")
+
+    // Get Input //
+    var playerAnswer = twentyInput.value;
+    toString(playerAnswer)
+
+    document.getElementById("rightOrWrong").innerHTML = "INCORRECT!"
+    body.classList.add("red")
+
+    document.getElementById("twentyCorrectAnswer").innerHTML = 'The answer is: "' + answers[randomItemAnswer] + '"'
+    if (playerAnswer.toUpperCase() == answers[randomItemAnswer].toUpperCase()){
+        document.getElementById("rightOrWrong").innerHTML = "CORRECT!"
+        body.classList.remove("red")
+        body.classList.add("green")
+        score += 1
+    }
+    
+    totalScore += 1
+    scoreDisplay.innerHTML = "Score: " + score + "/" + totalScore
+    document.getElementById("answer").classList.remove("buttons-display")
+}
+</script>
+</html>
