@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encryption & Decryption</title>
+</head>
+<style>
+    body{
+        display: flex;
+        justify-content: center;
+        padding-top: 100px;
+        flex-grow: 1;
+        text-align: center;
+        width: 100%;
+        }
+        
+    .output{
+            width: 300px;
+            height: 150px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            overflow-y: scroll; /* Enables vertical scrolling */
+            overflow-x: hidden; /* Hides horizontal scrolling */
+            word-wrap: break-word;
+        }
+
+    input{
+        width:80%; 
+        height:30%; 
+        text-align:center;
+        padding: 20px;
+        font-size: 1rem; 
+    }
+
+    button{
+        padding: 30px;
+        font-size: 1rem;
+    }
+
+</style>
+<body>
+    <div class="inputs">
+        <h1>Message Input</h1>
+        <input div="inputForm" id="inputForm" placeholder="Message to process"></input>
+        <div class="buttons">
+            <button onclick="encryptMessage()">Encrypt</button>
+            <button onclick="decryptMessage()">Decrypt</button>
+            <button onclick="clearText()">Clear</button>
+        </div>
+    </div>
+    <div class="output">
+        <h3 id="outputForm"></h3>
+    </div>
+</body>
+</html>
+
+<script>
+    const chars = [' ', '!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    const key = ['U', '2', 'l', 'g', 'F', '8', 'o', 'I', '!', 'n', '3', 'z', 'H', '7', '}', '4', 'f', 'P', 'x', 'b', 'V', 'E', ' ', 'k', '&', '{', 'N', 'L', 'v', ')', 'w', '5', '=', 'M', 'j', 'e', 'X', '(', 'S', '>', '?', '"', 'W', 'K', '_', '<', 'O', '-', ']', 'Q', '+', 'h', 'r', 'p', 'Z', 'C', 'J', 'T', 'G', 'm', 'R', 'Y', '\\', '/', 'a', '0', 't', '*', '#', '~', "'", 's', '%', ';', 'A', '6', '9', 'D', ',', 'y', 'i', '`', '^', 'B', 'd', 'c', ':', '.', 'q', 'u', '@', '[', '|', '$', '1']
+    const inputForm = document.getElementById('inputForm')
+    const outputForm = document.getElementById('outputForm')
+    
+    const char_length = chars.length
+    const key_length = key.length
+
+    function encryptMessage(){
+        let inputtedMessage = inputForm.value
+        let outputMessage = ''
+        for (let charIndex = 0; charIndex < inputtedMessage.length; charIndex++) {
+            index = chars.indexOf(inputtedMessage[charIndex]) 
+            if (index + charIndex >= char_length){
+                index = index + charIndex - (char_length * Math.floor((index + charIndex) / char_length))
+            }else{
+                index += charIndex
+            }
+            outputMessage += key[index]            
+        }        
+        outputForm.innerHTML = outputMessage
+    }
+
+    function decryptMessage(){
+        let inputtedMessage = inputForm.value
+        let outputMessage = ''
+        for (let i = 0; i < inputtedMessage.length; i++) {
+            keyIndex = key.indexOf(inputtedMessage[i])
+            if (keyIndex - i <= 0){
+                keyIndex = keyIndex - i + (key_length * Math.floor((keyIndex + i) / key_length))
+            }else{
+                keyIndex -= i
+            }
+            console.log(keyIndex)
+            outputMessage += chars[keyIndex]            
+        }
+        outputForm.innerHTML = outputMessage
+    }
+
+    function clearText(){
+        inputForm.value = ""
+        outputForm.innerHTML = ""
+    }
+</script>
