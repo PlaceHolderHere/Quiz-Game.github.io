@@ -56,6 +56,8 @@
     var score = 0
     var randomItemAnswer = 0
     var body = document.getElementById("body")
+    var questions = []
+    var answers = []
     
     // Quiz Type //
     var quizChoices = document.getElementById("quizSelection")
@@ -67,18 +69,42 @@
     var playerAnswer = ""
     
     // Items //
-    var quizesQuestions = [["SDGs", ["What SDG is: Walang Kahirapan", "What SDG is: Walang Kagutuman", "What SDG is: Mabuting kalusugan at Maayos na pamumuhay", "What SDG is: De-Kalidad na Edukasyon", "What SDG is: Pagkakapantay-pantay ng Kasarian", "What SDG is: Malinis na Tubig at Sanitasyon", "What SDG is: Abot-kaya at Malinis na Enerhiya", "What SDG is: Disenteng Trabaho at Maunlad na Ekonomiya", "What SDG is: Industriya, Inobasyon, at Imprastruktura", "What SDG is: Bawasan ang hindi pagkakapantay-pantay", "What SDG is: Mga Lungsod at Pamayanang Tuloy-tuloy ang Pag-unlad", "What SDG is: Responsableng Pagkonsumo at Produksyon", "What SDG is: Aksyong Pangklima", "What SDG is: Buhay at Yamang-dagat", "What SDG is: Buhay at Yamang-lupa", "What SDG is: Kapayapaan, Katarungan, at Matatag na mga Institusyon", "What SDG is: Pagtutulungan para sa mga Adhikain"]], ["MDGs", ["What MDG is: Paglaban sa matinding kahirapan at kagutuman", "What MDG is: Primaryang Edukasyon para sa lahat", "What MDG is: Pagkakapantay-pantay ng kasarian at pagpapalakas ng kababaihan", "What MDG is: Pagbawas sa dami ng namamatay na bata", "What MDG is: Pagpapabuti ng pangangalaga sa kalusugan ng ina", "What MDG is: Paglaban sa HIV/AIDS, malaria, at iba pang pangunahing sakit", "What MDG is: Pagtiyak sa pangmatagalang pagpapanatili ng kapaligiran", "What MDG is: Pandaigdigang Pagtutulungan tungo sa pag-unlad"]]]
-    var quizesAnswers = [["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17"], ["1", "2", "3", "4", "5", "6", "7", "8"]]
-    
-    var questions = []
-    var answers = []
-    
+    var quizes = [
+        ["CCE", {
+            "What article contains the rules on Filipino Citizenship?":"IV",
+            "What term refers to the right to vote?":"Suffrage",
+            "What article and section define suffrage?":"Article V Section 1",
+            "Which section guarantees due process of law and equal protection of the laws?": "1", 
+            "Which section protects against unreasonable searches and seizures and outlines search warrant requirements?": "2", 
+            "Which section guarantees the privacy of communication and correspondence?": "3", 
+            "Which section protects the freedom of speech, expression, the press, and the right to peaceably assemble?": "4", 
+            "Which section guarantees the free exercise and enjoyment of religious profession and worship?": "5", 
+            "Which section secures the liberty of abode and the right to travel?": "6", 
+            "Which section guarantees the right of the people to information on matters of public concern?": "7", 
+            "Which section protects the right to form unions, associations, or societies?": "8", 
+            "Which section states that private property shall not be taken for public use without just compensation?": "9", 
+            "Which section guarantees that no law impairing the obligation of contracts shall be passed?": "10", 
+            "Which section ensures free access to courts and quasi-judicial bodies and adequate legal assistance?": "11", 
+            "Which section guarantees rights under custodial investigation, including the right to remain silent and to counsel?": "12", 
+            "Which section provides the right to bail and protects against excessive bail?": "13", 
+            "Which section details the constitutional rights of the accused in criminal prosecutions, including the presumption of innocence?": "14", 
+            "Which section provides for the privilege of the writ of habeas corpus?": "15", 
+            "Which section guarantees the right to a speedy disposition of cases before all judicial, quasi-judicial, or administrative bodies?": "16", 
+            "Which section protects against self-incrimination (compulsory testimony against oneself)?": "17", 
+            "Which section prohibits detention solely by reason of political beliefs and involuntary servitude?": "18", 
+            "Which section prohibits excessive fines, as well as cruel, degrading, or inhuman punishment?": "19", 
+            "Which section states that no person shall be imprisoned for debt or non-payment of a poll tax?": "20", 
+            "Which section protects against double jeopardy?": "21", "Which section prohibits ex post facto laws and bills of attainder?": "22"
+            }],
+        
+    ]
+
     // Quiz Options
     var quizOptions = document.getElementById('quizSelection')
 
     // Load Options //
-    for (let i = 0; i < quizesQuestions.length; i++) {
-        quizOptions.innerHTML += `<option style="text-align: center;">${quizesQuestions[i][0]}</option>`
+    for (let i = 0; i < quizes.length; i++) {
+        quizOptions.innerHTML += `<option style="text-align: center;">${quizes[i][0]}</option>`
     } 
 
     // start game //
@@ -87,9 +113,9 @@
         document.getElementById("twentyItemQuiz").classList.toggle("buttons-display")
 
         var quizType = quizChoices.selectedIndex
-        questions = quizesQuestions[quizType][1]
-        answers = quizesAnswers[quizType]
-
+        questions = Object.keys(quizes[quizType][1])
+        answers = Object.values(quizes[quizType][1])
+        console.log(questions)
         questionGenerator()
     }
     
@@ -110,7 +136,7 @@
         randomItemAnswer = randomInt(0, (answers.length) - 1)
     
         // Question Generate
-        twentyQuestion.innerHTML = ('What is "' + questions[randomItemAnswer]+'"')
+        twentyQuestion.innerHTML = (questions[randomItemAnswer])
     }
     
     // Check Answers //
@@ -125,7 +151,7 @@
         document.getElementById("rightOrWrong").innerHTML = "INCORRECT!"
         body.classList.add("red")
     
-        document.getElementById("twentyCorrectAnswer").innerHTML = 'The answer is: "' + answers[randomItemAnswer] + '"'
+        document.getElementById("twentyCorrectAnswer").innerHTML = `The answer is "${answers[randomItemAnswer]}"`
         if (playerAnswer.toUpperCase() == answers[randomItemAnswer].toUpperCase()){
             document.getElementById("rightOrWrong").innerHTML = "CORRECT!"
             body.classList.remove("red")
@@ -134,7 +160,7 @@
         }
         
         totalScore += 1
-        scoreDisplay.innerHTML = "Score: " + score + "/" + totalScore
+        scoreDisplay.innerHTML = `Score: ${score}/${totalScore}`
         document.getElementById("answer").classList.remove("buttons-display")
     }
     </script>
